@@ -1,0 +1,35 @@
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+# Dictionary to store attendance
+attendance = {}
+
+def start(update, context):
+    update.message.reply_text('Hello! Use /mark to mark attendance.')
+
+def mark(update, context):
+    user = update.message.from_user
+    attendance[user.id] = user.full_name
+    update.message.reply_text(f'Attendance marked for {user.full_name}.')
+
+def show(update, context):
+    if attendance:
+        message = "Attendance List:\n" + "\n".join(attendance.values())
+    else:
+        message = "No attendance marked yet."
+    update.message.reply_text(message)
+
+def main():
+    # Replace '6889367518:AAGE1oo5GmrJkS_Rw7RIqwTprWKh9mToZEw' with your actual bot token
+    updater = Updater("6889367518:AAGE1oo5GmrJkS_Rw7RIqwTprWKh9mToZEw", use_context=True)
+    dp = updater.dispatcher
+    
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("mark", mark))
+    dp.add_handler(CommandHandler("show", show))
+    
+    updater.start_polling()
+    updater.idle()
+
+if name == 'main':
+    main()
+    
